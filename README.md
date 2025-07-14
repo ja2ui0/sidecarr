@@ -48,7 +48,7 @@ I plan to keep Sidecarr updated, but feature bloat is off the table. It's meant 
 - implement env vars for some config options
 
 ## Quick Start
-There are a million ways to run software. If you're checking out Sidecarr, you probably already know most of them. I’m opinionated about using docker compose, and especially [Portainer](https://github.com/portainer/portainer), for managing my homelab. Most of the community seems to agree, so that’s what this Quick Start is based on:
+There are a million ways to run software. If you're checking out Sidecarr, you probably already know most of them. I'm opinionated about using docker compose, and especially [Portainer](https://github.com/portainer/portainer), for managing my homelab. Most of the community seems to agree, so that's what this Quick Start is based on:
 
 ### Clone and Build
 ```bash
@@ -73,17 +73,19 @@ volumes:
   config:
 ```
 
-You can also use a bind mount if you prefer. If you don’t mount anything at all, Sidecarr will start in demo mode. It’ll show a default page with instructions and a sample side panel (populated with non-functional links) so you can see how it works right out of the gate.
+You can also use a bind mount if you prefer. If you don't mount anything at all, Sidecarr will start in demo mode. It'll show a default page with instructions and a sample side panel (populated with non-functional links) so you can see how it works right out of the gate.
 
 Check out the sample `config.yaml` in this repo to start building your own setup.
+
+I'd prefer not to distribute popular icons through this repo (for now), but I'll instead point out an incredible resource (curated by the same people responsible for Homarr) that will almost surely provide the needful: [Dashboard Icons](https://dashboardicons.com/icons)
 
 ### Run it
 `docker compose up -d`
 
-## Why Some Apps Don’t Load in Sidecarr
+## Why Some Apps Don't Load in Sidecarr
 Sidecarr is built around iframes. That works great for most self-hosted tools, but not every app plays nice.
 
-Some services show a blank screen, fail silently, or refuse to load. That’s not a bug in Sidecarr, it’s by design.
+Some services show a blank screen, fail silently, or refuse to load. That's not a bug in Sidecarr, it's by design.
 
 ### Why It Happens
 Modern browsers respect security headers like:
@@ -102,9 +104,9 @@ These are there for good reason: they help prevent clickjacking and malicious em
 **Expect quirks.** Vaultwarden, Grafana, Overseerr, etc. usually work out of the box. Monolithic apps like Nextcloud, or vendor appliances like Synology, might need extra steps (Synology, for example, has an iframe option in its own UI). Remotely hosted applications pose their own interesting challenges!
 
 ### App-Specific Fixes
-We’re collecting working configs and known gotchas in the repo. Until that's live, open an issue and help others avoid the same problem.
+We're collecting working configs and known gotchas in the repo. Until that's live, open an issue and help others avoid the same problem.
 
-If it works in Organizr, odds are it’ll work in Sidecarr. Many existing iframe fixes apply 1:1. If you find a good one, open a PR or issue and we’ll include it.
+If it works in Organizr, odds are it will work in Sidecarr. Many existing iframe fixes apply 1:1. If you find a good one, open a PR or issue and I'll include it.
 
 \* Synology, in fact, has a setting in its own software to allow iframe embedding.
 
