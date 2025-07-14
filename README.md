@@ -5,7 +5,7 @@ A lightweight side panel for embedding self-hosted tools in configurably persist
 ![Collapsed view](https://github.com/user-attachments/assets/6abaec45-3d5f-44c6-82c8-4f8267a39211 "Collapsed view")
 Collapsed View.
 
-![Expanded view](https://github.com/user-attachments/assets/e0dbdbcb-5aac-4731-b824-0f98dec6e8d4 "Expanded view")
+![Expanded view](https://github.com/user-attachments/assets/486e4af1-232b-4e00-95b7-7445175b56aa "Expanded view")
 Expanded view.
 
 ## What It Does
