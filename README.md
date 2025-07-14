@@ -2,6 +2,7 @@
 
 ![Build & Push Docker Image](https://github.com/ja2ui0/sidecarr/actions/workflows/container-publish.yml/badge.svg)
 ![Made with Love](https://img.shields.io/badge/made%20with-%E2%9D%A4-red)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-buy%20me%20a%20coffee-FF5E5B?logo=kofi&logoColor=white&style=flat)](https://ko-fi.com/ja2ui0)
 
 A lightweight side panel for embedding self-hosted tools in configurably persistent iframes.
 
