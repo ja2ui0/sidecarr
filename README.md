@@ -93,14 +93,12 @@ These are there for good reason: they help prevent clickjacking and malicious em
 
 **Set your Home page to a dashboard** like Homarr or Dashy. Most dashboards support widgets or external links, so you can launch iframe-hostile apps in new tabs when needed.
 
-**Expect quirks.** Vaultwarden, Grafana, Overseerr, etc. usually work out of the box. Monolithic apps like Nextcloud, or vendor appliances like Synology, might need extra steps (Synology, for example, has an iframe option in its own UI). Remotely hosted applications pose their own interesting challenges!
+**Expect quirks.** Vaultwarden, Grafana, Overseerr, etc. usually work out of the box. Monolithic apps like Nextcloud, or vendor appliances like Synology, might need extra steps (Synology, for example, has an iframe option in its own UI). Remotely hosted applications may pose their own interesting challenges!
 
 ### App-Specific Fixes
 We're collecting working configs and known gotchas in the repo. Until that's live, open an issue and help others avoid the same problem.
 
 If it works in Organizr, odds are it will work in Sidecarr. Many existing iframe fixes apply 1:1. If you find a good one, open a PR or issue and I'll include it.
-
-\* Synology, in fact, has a setting in its own software to allow iframe embedding.
 
 ## License
 Sidecarr is licensed under the GNU General Public License v3.0 (GPLv3). That means you're free to use, share, and modify it - just keep it open and share alike.
