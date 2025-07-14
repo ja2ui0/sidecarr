@@ -40,7 +40,6 @@ I plan to keep Sidecarr updated, but feature bloat is off the table. It's meant 
 - Ships as a single container with config persistence
 
 ## TODO
-- publish images on Docker Hub
 - light / dark / use system theme
 - user customizeable expanded panel width (to accommodate long labels)
 - config and add images via web
@@ -50,18 +49,11 @@ I plan to keep Sidecarr updated, but feature bloat is off the table. It's meant 
 ## Quick Start
 There are a million ways to run software. If you're checking out Sidecarr, you probably already know most of them. I'm opinionated about using docker compose, and especially [Portainer](https://github.com/portainer/portainer), for managing my homelab. Most of the community seems to agree, so that's what this Quick Start is based on:
 
-### Clone and Build
-```bash
-git clone https://github.com/ja2ui0/sidecarr
-cd sidecarr
-docker build -t sidecarr .
-```
-
 ### Example `compose.yaml`
 ```
 services:
   sidecarr:
-    image: sidecarr
+    image: ghcr.io/ja2ui0/sidecarr:latest
     container_name: sidecarr
     ports:
       - "8086:80"
