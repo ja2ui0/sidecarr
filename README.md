@@ -1,6 +1,7 @@
 # ![Sidecarr logo](/site/favicon.png "Sidecarr logo") Sidecarr
 
 ![Build & Push Docker Image](https://github.com/ja2ui0/sidecarr/actions/workflows/container-publish.yml/badge.svg)
+![Made with Love](https://img.shields.io/badge/made%20with-%E2%9D%A4-red)
 
 A lightweight side panel for embedding self-hosted tools in configurably persistent iframes.
 
