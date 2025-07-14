@@ -1,10 +1,21 @@
 let discardStrategy = "remove";
-let discardTimeout = 300; // seconds
-let breakoutTarget = "tab"; // or "window"
+let discardTimeout = 300;
+let breakoutTarget = "tab";
 let iframeMap = {};
 let discardTimers = {};
 let currentUrl = '';
 let historyStack = [];
+
+function applyTheme(pref) {
+  const html = document.documentElement;
+  if (pref === 'dark') {
+    html.setAttribute('data-theme', 'dark');
+  } else if (pref === 'light') {
+    html.setAttribute('data-theme', 'light');
+  } else {
+    html.removeAttribute('data-theme'); // system
+  }
+}
 
 async function loadConfig() {
   const res = await fetch('/config/config.yaml');
@@ -15,56 +26,66 @@ async function loadConfig() {
   discardTimeout = parsed.discard_timeout || 300;
   breakoutTarget = parsed.breakout?.target || "tab";
 
-  buildSidebar(parsed, parsed.home?.url || '');
+  const userPref = localStorage.getItem('themePreference') || 'system';
+  applyTheme(userPref);
 
-  if (parsed.home?.url) {
-    load(parsed.home.url, true);
-  }
+  buildSidebar(parsed, parsed.home?.url || '');
+  if (parsed.home?.url) load(parsed.home.url, true);
 
   window.onpopstate = function (event) {
-    if (event.state && event.state.url) {
-      load(event.state.url, false);
-    }
+    if (event.state?.url) load(event.state.url, false);
   };
 }
 
 function buildSidebar(config, defaultPage) {
-  const sidebar = document.getElementById('sidebar');
-  sidebar.innerHTML = '';
+  const sidebarTop = document.getElementById('sidebar-top-buttons');
+  const sidebarMiddle = document.getElementById('sidebar-middle');
+  const sidebarBottom = document.getElementById('sidebar-bottom-buttons');
 
-  const top = document.createElement('div');
-  top.id = 'sidebar-top';
+  sidebarTop.innerHTML = '';
+  sidebarMiddle.innerHTML = '';
+  sidebarBottom.innerHTML = '';
 
-  const middle = document.createElement('div');
-  middle.id = 'sidebar-middle';
+  // Top: Home, Breakout, Reload
+  const topLinks = [
+    {
+      name: config.home?.name || 'Home',
+      icon: config.home?.icon || 'home.png',
+      handler: () => load(config.home?.url || '', true)
+    },
+    {
+      name: config.breakout?.name || 'Breakout',
+      icon: config.breakout?.icon || 'breakout.png',
+      handler: breakoutCurrent
+    },
+    {
+      name: config.reload?.name || 'Reload',
+      icon: config.reload?.icon || 'reload.png',
+      handler: reloadCurrent
+    }
+  ];
 
-  const bottom = document.createElement('div');
-  bottom.id = 'sidebar-bottom';
+  for (const item of topLinks) {
+    const link = document.createElement('div');
+    link.className = 'link';
+    link.onclick = item.handler;
 
-  // Home link
-  if (defaultPage) {
-    const homeName = config.home?.name || 'Home';
-    const homeIcon = config.home?.icon || 'home.png';
+    const icon = document.createElement('img');
+    icon.className = 'link-icon';
+    icon.src = `/config/icons/${item.icon}`;
+    icon.alt = item.name;
 
-    const homeLink = createSidebarLink(homeIcon, homeName, () => load(defaultPage, true));
-    top.appendChild(homeLink);
+    const label = document.createElement('span');
+    label.className = 'link-label';
+    label.textContent = item.name;
+
+    link.appendChild(icon);
+    link.appendChild(label);
+    sidebarTop.appendChild(link);
   }
 
-  // Breakout link
-  const breakoutName = config.breakout?.name || 'Breakout';
-  const breakoutIcon = config.breakout?.icon || 'breakout.png';
-  const breakoutLink = createSidebarLink(breakoutIcon, breakoutName, breakoutCurrent);
-  top.appendChild(breakoutLink);
-
-  // Reload link
-  const reloadName = config.reload?.name || "Reload Frame";
-  const reloadIcon = config.reload?.icon || "reload.png";
-  const reloadLink = createSidebarLink(reloadIcon, reloadName, reloadCurrent);
-  top.appendChild(reloadLink);
-
-  // Groups
-  const groups = config.groups || [];
-  for (const group of groups) {
+  // Middle: groups + items
+  for (const group of config.groups || []) {
     const groupDiv = document.createElement('div');
     groupDiv.className = 'group';
 
@@ -75,7 +96,7 @@ function buildSidebar(config, defaultPage) {
     const groupIcon = document.createElement('img');
     groupIcon.className = 'group-icon';
     groupIcon.src = `/config/icons/${group.icon}`;
-    groupIcon.alt = `${group.group}`;
+    groupIcon.alt = group.group;
 
     const groupLabel = document.createElement('span');
     groupLabel.className = 'group-label';
@@ -89,52 +110,50 @@ function buildSidebar(config, defaultPage) {
     linksContainer.className = 'links';
 
     for (const item of group.items) {
-      const link = createSidebarLink(item.icon, item.name, () => load(item.url, true));
+      const link = document.createElement('div');
+      link.className = 'link';
+      link.onclick = () => load(item.url, true);
+
+      const icon = document.createElement('img');
+      icon.className = 'link-icon';
+      icon.src = `/config/icons/${item.icon}`;
+      icon.alt = item.name;
+
+      const label = document.createElement('span');
+      label.className = 'link-label';
+      label.textContent = item.name;
+
+      link.appendChild(icon);
+      link.appendChild(label);
       linksContainer.appendChild(link);
     }
 
     groupDiv.appendChild(linksContainer);
-    middle.appendChild(groupDiv);
+    sidebarMiddle.appendChild(groupDiv);
   }
 
-  // Settings button
-  const settingsIcon = config.settings?.icon || 'settings.png';
-  const settingsLabel = config.settings?.name || 'Settings';
-  const settingsUrl = config.settings?.url || 'about:blank'; // replace as needed
-  const settingsLink = createSidebarLink(settingsIcon, settingsLabel, () => load(settingsUrl, true));
-  bottom.appendChild(settingsLink);
+  // Bottom: Settings
+  const settingsLink = document.createElement('div');
+  settingsLink.className = 'link';
+  settingsLink.onclick = () => load('settings.html', true);
 
-  // Build full sidebar
-  sidebar.appendChild(top);
-  sidebar.appendChild(middle);
-  sidebar.appendChild(bottom);
-}
+  const settingsIcon = document.createElement('img');
+  settingsIcon.className = 'link-icon';
+  settingsIcon.src = '/config/icons/settings.png';
+  settingsIcon.alt = 'Settings';
 
-function createSidebarLink(iconPath, labelText, onClick) {
-  const link = document.createElement('div');
-  link.className = 'link';
-  link.onclick = onClick;
+  const settingsLabel = document.createElement('span');
+  settingsLabel.className = 'link-label';
+  settingsLabel.textContent = 'Settings';
 
-  const icon = document.createElement('img');
-  icon.className = 'link-icon';
-  icon.src = `/config/icons/${iconPath}`;
-  icon.alt = labelText;
-
-  const label = document.createElement('span');
-  label.className = 'link-label';
-  label.textContent = labelText;
-
-  link.appendChild(icon);
-  link.appendChild(label);
-  return link;
+  settingsLink.appendChild(settingsIcon);
+  settingsLink.appendChild(settingsLabel);
+  sidebarBottom.appendChild(settingsLink);
 }
 
 function load(url, pushToHistory = true) {
   const container = document.getElementById('iframeContainer');
-
-  for (const [key, iframe] of Object.entries(iframeMap)) {
-    iframe.style.display = 'none';
-  }
+  for (const [key, iframe] of Object.entries(iframeMap)) iframe.style.display = 'none';
 
   if (discardTimers[url]) {
     clearTimeout(discardTimers[url]);
@@ -151,10 +170,7 @@ function load(url, pushToHistory = true) {
     container.appendChild(iframe);
   }
 
-  if (pushToHistory && url !== currentUrl) {
-    history.pushState({ url }, '', '');
-  }
-
+  if (pushToHistory && url !== currentUrl) history.pushState({ url }, '', '');
   currentUrl = url;
 
   for (const [key, iframe] of Object.entries(iframeMap)) {
@@ -174,23 +190,16 @@ function load(url, pushToHistory = true) {
 
 function breakoutCurrent() {
   if (!currentUrl) return;
-  if (breakoutTarget === 'window') {
-    window.open(currentUrl, '_blank', 'noopener,noreferrer');
-  } else {
-    window.open(currentUrl, '_blank');
-  }
+  window.open(currentUrl, '_blank', breakoutTarget === 'window' ? 'noopener,noreferrer' : '');
 }
 
 function reloadCurrent() {
   if (!currentUrl) return;
-
   const container = document.getElementById('iframeContainer');
-
   if (iframeMap[currentUrl]) {
     container.removeChild(iframeMap[currentUrl]);
     delete iframeMap[currentUrl];
   }
-
   load(currentUrl, false);
 }
 
@@ -198,26 +207,24 @@ function toggleGroup(header) {
   const group = header.nextElementSibling;
   const label = header.querySelector('.group-label');
   const isHidden = group.style.display === 'none';
-
   group.style.display = isHidden ? 'flex' : 'none';
-
   if (label) {
     label.textContent = label.textContent.replace(isHidden ? '▸' : '▾', isHidden ? '▾' : '▸');
   }
 }
+
+window.addEventListener('message', (event) => {
+  if (event.data?.type === 'set-theme') {
+    applyTheme(event.data.value);
+  }
+});
 
 window.addEventListener('DOMContentLoaded', () => {
   loadConfig();
 
   const sidebar = document.getElementById('sidebar');
   sidebar.classList.add('collapsed');
-
-  sidebar.addEventListener('mouseenter', () => {
-    sidebar.classList.remove('collapsed');
-  });
-
-  sidebar.addEventListener('mouseleave', () => {
-    sidebar.classList.add('collapsed');
-  });
+  sidebar.addEventListener('mouseenter', () => sidebar.classList.remove('collapsed'));
+  sidebar.addEventListener('mouseleave', () => sidebar.classList.add('collapsed'));
 });
 

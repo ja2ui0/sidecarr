@@ -10,6 +10,24 @@
   --spacing: 12px;
 }
 
+/* Light Theme */
+html[data-theme="light"] {
+  --bg: #f5f5f5;
+  --sidebar: #dddddd;
+  --text: #000000;
+  --highlight: #cccccc;
+  --frame-bg: #ffffff;
+}
+
+/* Dark Theme */
+html[data-theme="dark"] {
+  --bg: #1e1e1e;
+  --sidebar: #2b2b2b;
+  --text: #ffffff;
+  --highlight: #444;
+  --frame-bg: #000000;
+}
+
 html, body {
   margin: 0;
   height: 100%;
@@ -32,51 +50,42 @@ html, body {
   z-index: 1000;
 }
 
+/* Expand on hover */
 .sidebar:hover {
   width: var(--sidebar-hover-width);
 }
 
-/* Top and bottom are fixed, middle scrolls */
-#sidebar-top,
-#sidebar-bottom {
+/* Top and bottom stay fixed */
+.sidebar-top,
+.sidebar-bottom {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
+  padding: var(--spacing) 0;
 }
 
-#sidebar-top {
-  padding-bottom: var(--spacing);
-  padding-top: var(--spacing);
-}
-
-#sidebar-bottom {
-  padding-top: var(--spacing);
-  padding-bottom: var(--spacing);
-}
-
-#sidebar-middle {
+/* Middle scrolls */
+.sidebar-middle {
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: thin;
   scrollbar-color: var(--highlight) transparent;
 }
 
-/* Hide scrollbar entirely when collapsed */
-.sidebar.collapsed #sidebar-middle {
-  overflow-y: hidden;
-}
-
-.sidebar::-webkit-scrollbar {
+.sidebar:hover .sidebar-middle::-webkit-scrollbar {
   width: 6px;
 }
-.sidebar.collapsed::-webkit-scrollbar {
+.sidebar.collapsed .sidebar-middle {
+  overflow-y: hidden;
+}
+.sidebar.collapsed .sidebar-middle::-webkit-scrollbar {
   display: none;
 }
 
-/* Group container */
+/* Groups */
 .group {
   width: 100%;
   margin-bottom: 10px;
@@ -85,6 +94,7 @@ html, body {
 .group-title {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   padding: 6px 10px;
   cursor: pointer;
   user-select: none;
@@ -97,17 +107,11 @@ html, body {
 .group-icon {
   width: 20px;
   height: 20px;
-  object-fit: contain;
-  object-position: center;
   margin-right: 10px;
-  display: block;
 }
 
 .group-label {
   display: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .sidebar:hover .group-label {
@@ -124,6 +128,7 @@ html, body {
 .link {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   padding: 6px 10px;
   cursor: pointer;
   transition: background 0.2s ease;
@@ -136,24 +141,18 @@ html, body {
 .link-icon {
   width: 20px;
   height: 20px;
-  object-fit: contain;
-  object-position: center;
   margin-right: 10px;
-  display: block;
 }
 
 .link-label {
   display: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .sidebar:hover .link-label {
   display: inline;
 }
 
-/* Collapsed state tweaks */
+/* Collapsed tweaks */
 .sidebar.collapsed .link,
 .sidebar.collapsed .group-title {
   justify-content: center;
@@ -176,5 +175,26 @@ iframe {
   border: none;
   background: var(--frame-bg);
   z-index: 0;
+}
+
+/* Settings page */
+.settings-body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: sans-serif;
+  padding: 20px;
+}
+
+.settings-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.settings-container h1 {
+  margin-bottom: 10px;
+}
+
+.theme-option {
+  margin: 8px 0;
 }
 

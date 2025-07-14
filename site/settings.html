@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Settings</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="settings-body">
+  <div class="settings-container">
+    <h1>Settings</h1>
+
+    <label><strong>Theme</strong></label>
+    <div class="theme-option">
+      <input type="radio" name="theme" value="light" id="theme-light">
+      <label for="theme-light">Light</label>
+    </div>
+    <div class="theme-option">
+      <input type="radio" name="theme" value="dark" id="theme-dark">
+      <label for="theme-dark">Dark</label>
+    </div>
+    <div class="theme-option">
+      <input type="radio" name="theme" value="system" id="theme-system">
+      <label for="theme-system">System</label>
+    </div>
+  </div>
+
+  <script>
+    const current = localStorage.getItem('themePreference') || 'system';
+    const selected = document.getElementById('theme-' + current);
+    if (selected) selected.checked = true;
+
+    document.querySelectorAll('input[name="theme"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        const value = radio.value;
+        localStorage.setItem('themePreference', value);
+        parent.postMessage({ type: 'set-theme', value }, '*');
+      });
+    });
+  </script>
+</body>
+</html>
+
