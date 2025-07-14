@@ -1,4 +1,4 @@
-# Sidecarr
+# ![Sidecarr logo](/site/favicon.png "Sidecarr logo") Sidecarr
 
 A lightweight sidebar for self-hosted tools. Nothing more, nothing less.
 
