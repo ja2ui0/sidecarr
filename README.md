@@ -8,7 +8,7 @@ A lightweight side panel for embedding self-hosted tools in configurably persist
 ![Collapsed view](https://i.imgur.com/LKMyEBz.png "Collapsed view")
 Collapsed View.
 
-![Expanded view](ihttps://i.imgur.com/xWxyAj5.png "Expanded view")
+![Expanded view](https://i.imgur.com/xWxyAj5.png "Expanded view")
 Expanded view.
 
 ## What It Does
