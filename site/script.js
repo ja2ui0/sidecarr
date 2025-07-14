@@ -32,70 +32,35 @@ function buildSidebar(config, defaultPage) {
   const sidebar = document.getElementById('sidebar');
   sidebar.innerHTML = '';
 
+  const top = document.createElement('div');
+  top.id = 'sidebar-top';
+
+  const middle = document.createElement('div');
+  middle.id = 'sidebar-middle';
+
+  const bottom = document.createElement('div');
+  bottom.id = 'sidebar-bottom';
+
   // Home link
   if (defaultPage) {
     const homeName = config.home?.name || 'Home';
     const homeIcon = config.home?.icon || 'home.png';
 
-    const homeLink = document.createElement('div');
-    homeLink.className = 'link';
-    homeLink.onclick = () => load(defaultPage, true);
-
-    const icon = document.createElement('img');
-    icon.className = 'link-icon';
-    icon.src = `/config/icons/${homeIcon}`;
-    icon.alt = 'Home';
-
-    const label = document.createElement('span');
-    label.className = 'link-label';
-    label.textContent = homeName;
-
-    homeLink.appendChild(icon);
-    homeLink.appendChild(label);
-    sidebar.appendChild(homeLink);
+    const homeLink = createSidebarLink(homeIcon, homeName, () => load(defaultPage, true));
+    top.appendChild(homeLink);
   }
 
   // Breakout link
   const breakoutName = config.breakout?.name || 'Breakout';
   const breakoutIcon = config.breakout?.icon || 'breakout.png';
-
-  const breakoutLink = document.createElement('div');
-  breakoutLink.className = 'link';
-  breakoutLink.onclick = () => breakoutCurrent();
-
-  const breakoutImg = document.createElement('img');
-  breakoutImg.className = 'link-icon';
-  breakoutImg.src = `/config/icons/${breakoutIcon}`;
-  breakoutImg.alt = 'Breakout';
-
-  const breakoutLabel = document.createElement('span');
-  breakoutLabel.className = 'link-label';
-  breakoutLabel.textContent = breakoutName;
-
-  breakoutLink.appendChild(breakoutImg);
-  breakoutLink.appendChild(breakoutLabel);
-  sidebar.appendChild(breakoutLink);
+  const breakoutLink = createSidebarLink(breakoutIcon, breakoutName, breakoutCurrent);
+  top.appendChild(breakoutLink);
 
   // Reload link
   const reloadName = config.reload?.name || "Reload Frame";
   const reloadIcon = config.reload?.icon || "reload.png";
-
-  const reloadLink = document.createElement('div');
-  reloadLink.className = 'link';
-  reloadLink.onclick = () => reloadCurrent();
-
-  const reloadImg = document.createElement('img');
-  reloadImg.className = 'link-icon';
-  reloadImg.src = `/config/icons/${reloadIcon}`;
-  reloadImg.alt = 'Reload';
-
-  const reloadLabel = document.createElement('span');
-  reloadLabel.className = 'link-label';
-  reloadLabel.textContent = reloadName;
-
-  reloadLink.appendChild(reloadImg);
-  reloadLink.appendChild(reloadLabel);
-  sidebar.appendChild(reloadLink);
+  const reloadLink = createSidebarLink(reloadIcon, reloadName, reloadCurrent);
+  top.appendChild(reloadLink);
 
   // Groups
   const groups = config.groups || [];
@@ -124,27 +89,44 @@ function buildSidebar(config, defaultPage) {
     linksContainer.className = 'links';
 
     for (const item of group.items) {
-      const link = document.createElement('div');
-      link.className = 'link';
-      link.onclick = () => load(item.url, true);
-
-      const icon = document.createElement('img');
-      icon.className = 'link-icon';
-      icon.src = `/config/icons/${item.icon}`;
-      icon.alt = item.name;
-
-      const label = document.createElement('span');
-      label.className = 'link-label';
-      label.textContent = item.name;
-
-      link.appendChild(icon);
-      link.appendChild(label);
+      const link = createSidebarLink(item.icon, item.name, () => load(item.url, true));
       linksContainer.appendChild(link);
     }
 
     groupDiv.appendChild(linksContainer);
-    sidebar.appendChild(groupDiv);
+    middle.appendChild(groupDiv);
   }
+
+  // Settings button
+  const settingsIcon = config.settings?.icon || 'settings.png';
+  const settingsLabel = config.settings?.name || 'Settings';
+  const settingsUrl = config.settings?.url || 'about:blank'; // replace as needed
+  const settingsLink = createSidebarLink(settingsIcon, settingsLabel, () => load(settingsUrl, true));
+  bottom.appendChild(settingsLink);
+
+  // Build full sidebar
+  sidebar.appendChild(top);
+  sidebar.appendChild(middle);
+  sidebar.appendChild(bottom);
+}
+
+function createSidebarLink(iconPath, labelText, onClick) {
+  const link = document.createElement('div');
+  link.className = 'link';
+  link.onclick = onClick;
+
+  const icon = document.createElement('img');
+  icon.className = 'link-icon';
+  icon.src = `/config/icons/${iconPath}`;
+  icon.alt = labelText;
+
+  const label = document.createElement('span');
+  label.className = 'link-label';
+  label.textContent = labelText;
+
+  link.appendChild(icon);
+  link.appendChild(label);
+  return link;
 }
 
 function load(url, pushToHistory = true) {
@@ -204,13 +186,11 @@ function reloadCurrent() {
 
   const container = document.getElementById('iframeContainer');
 
-  // Remove the old iframe if it exists
   if (iframeMap[currentUrl]) {
     container.removeChild(iframeMap[currentUrl]);
     delete iframeMap[currentUrl];
   }
 
-  // Re-load the same URL
   load(currentUrl, false);
 }
 

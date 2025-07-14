@@ -7,6 +7,7 @@
   --frame-bg: #000000;
   --sidebar-width: 60px;
   --sidebar-hover-width: 200px;
+  --spacing: 12px;
 }
 
 html, body {
@@ -27,11 +28,6 @@ html, body {
   background: var(--sidebar);
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  overflow-x: hidden;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--highlight) transparent;
   transition: width 0.2s ease;
   z-index: 1000;
 }
@@ -40,18 +36,47 @@ html, body {
   width: var(--sidebar-hover-width);
 }
 
+/* Top and bottom are fixed, middle scrolls */
+#sidebar-top,
+#sidebar-bottom {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#sidebar-top {
+  padding-bottom: var(--spacing);
+  padding-top: var(--spacing);
+}
+
+#sidebar-bottom {
+  padding-top: var(--spacing);
+  padding-bottom: var(--spacing);
+}
+
+#sidebar-middle {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: var(--highlight) transparent;
+}
+
+/* Hide scrollbar entirely when collapsed */
+.sidebar.collapsed #sidebar-middle {
+  overflow-y: hidden;
+}
+
 .sidebar::-webkit-scrollbar {
   width: 6px;
 }
-
 .sidebar.collapsed::-webkit-scrollbar {
   display: none;
 }
 
-.sidebar.collapsed {
-  overflow-y: hidden;
-}
-
+/* Group container */
 .group {
   width: 100%;
   margin-bottom: 10px;
@@ -95,6 +120,7 @@ html, body {
   margin-top: 4px;
 }
 
+/* Link buttons */
 .link {
   display: flex;
   align-items: center;
@@ -127,6 +153,7 @@ html, body {
   display: inline;
 }
 
+/* Collapsed state tweaks */
 .sidebar.collapsed .link,
 .sidebar.collapsed .group-title {
   justify-content: center;
@@ -139,6 +166,7 @@ html, body {
   margin-right: 0;
 }
 
+/* Iframe */
 iframe {
   position: absolute;
   top: 0;
