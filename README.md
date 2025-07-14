@@ -5,10 +5,10 @@
 
 A lightweight side panel for embedding self-hosted tools in configurably persistent iframes.
 
-![Collapsed view](https://i.imgur.com/LKMyEBz.png "Collapsed view")
+![Collapsed view](https://raw.githubusercontent.com/ja2ui0/sidecarr/refs/heads/main/assets/collapsed-view.png "Collapsed view")
 Collapsed View.
 
-![Expanded view](https://i.imgur.com/xWxyAj5.png "Expanded view")
+![Expanded view](https://raw.githubusercontent.com/ja2ui0/sidecarr/refs/heads/main/assets/expanded-view.png "Expanded view")
 Expanded view.
 
 ## What It Does
