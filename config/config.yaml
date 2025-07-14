@@ -1,0 +1,79 @@
+# This is the default configuration file for Sidecarr.
+# It is included in the image for demonstration purposes.
+# To use your own configuration, mount a volume or bind mount to /config.
+# /config/config.yaml and /config/icons/ are where these things go.
+# When a volume is mounted at /config, this file will be replaced entirely by your own,
+# so make sure you pull a sample config and icon pack from the github page!
+
+# 'home' refers to the topmost icon,
+# and the content of the iFrame on initial page load.
+home:
+  name: Home
+  url: default.html # you can use any http(s):// page (dashboard!) you like.
+  icon: home.png
+
+# This icon allows you to break the loaded iFrame out to a native session.
+breakout:
+  name: Breakout
+  target: tab # options: "tab" or "window"
+  icon: breakout.png
+
+# This will destroy and reload the current iFrame contents.
+reload:
+  name: Reload Frame  # Optional, defaults to this
+  icon: reload.png     # Optional, defaults to reload.png
+
+# These are memory saving settings.
+# "remove" will aggressively remove the iFrameContainer from the DOM.
+# "blank" will remove only the persistence of the iFrameContainer state.
+discard_strategy: remove
+discard_timeout: 300 # seconds
+
+# These are all your groups and apps.
+# Items cannot exist outside of a group.
+groups:
+  - group: Infrastructure
+    icon: cloud.png
+    items:
+      - name: Portainer
+        url: https://portainer.local
+        icon: portainer.png
+      - name: NGINX Proxy Manager
+        url: https://npm.local
+        icon: nginxproxymanager.png
+      - name: AdGuard Home
+        url: https://adguard.local
+        icon: adguardhome.png
+      - name: Vaultwarden
+        url: https://vault.local
+        icon: vaultwarden.png
+
+  - group: Media Stack
+    icon: multimedia.png
+    items:
+      - name: Overseerr
+        url: https://overseerr.local
+        icon: overseerr.png
+      - name: Prowlarr
+        url: https://prowlarr.local
+        icon: prowlarr.png
+      - name: Sonarr
+        url: https://sonarr.local
+        icon: sonarr.png
+      - name: Radarr
+        url: https://radarr.local
+        icon: radarr.png
+      - name: SABnzbd
+        url: https://sab.local
+        icon: sabnzbd.png
+
+  - group: Monitoring
+    icon: monitoring.png
+    items:
+      - name: Prometheus
+        url: https://prometheus.local
+        icon: prometheus.png
+      - name: Grafana
+        url: https://grafana.local
+        icon: grafana.png
+

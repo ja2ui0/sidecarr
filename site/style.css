@@ -1,0 +1,152 @@
+:root {
+  color-scheme: light dark;
+  --bg: #1e1e1e;
+  --sidebar: #2b2b2b;
+  --text: #ffffff;
+  --highlight: #444;
+  --frame-bg: #000000;
+  --sidebar-width: 60px;
+  --sidebar-hover-width: 200px;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background: var(--sidebar);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--highlight) transparent;
+  transition: width 0.2s ease;
+  z-index: 1000;
+}
+
+.sidebar:hover {
+  width: var(--sidebar-hover-width);
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar.collapsed::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar.collapsed {
+  overflow-y: hidden;
+}
+
+.group {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.group-title {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 16px;
+  font-weight: bold;
+  opacity: 0.9;
+  margin-top: 12px;
+}
+
+.group-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  object-position: center;
+  margin-right: 10px;
+  display: block;
+}
+
+.group-label {
+  display: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar:hover .group-label {
+  display: inline;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.link:hover {
+  background: var(--highlight);
+}
+
+.link-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  object-position: center;
+  margin-right: 10px;
+  display: block;
+}
+
+.link-label {
+  display: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar:hover .link-label {
+  display: inline;
+}
+
+.sidebar.collapsed .link,
+.sidebar.collapsed .group-title {
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sidebar.collapsed .link-icon,
+.sidebar.collapsed .group-icon {
+  margin-right: 0;
+}
+
+iframe {
+  position: absolute;
+  top: 0;
+  left: var(--sidebar-width);
+  width: calc(100vw - var(--sidebar-width));
+  height: 100vh;
+  border: none;
+  background: var(--frame-bg);
+  z-index: 0;
+}
+
