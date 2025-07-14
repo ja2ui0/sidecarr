@@ -10,15 +10,15 @@ Expanded view.
 
 ## What It Does
 
-**Sidecarr** is a minimal, containerized launcher that gives you a collapsible sidebar for quick access to your self-hosted services via iframes. You define the layout in a simple `config.yaml`, drop in your own icons, and go. It does exactly one thing: give you fast access to everything you already run - no bloat, no nonsense.
+**Sidecarr** is a minimal, containerized launcher that gives you a collapsible side panel for quick access to your self-hosted services via iframes. You define the layout in a simple `config.yaml`, drop in your own icons, and go. It does exactly one thing: give you fast access to everything you already run - no bloat, no nonsense.
 
 You can reload frames, pop them out into new tabs or windows, and keep unused ones from hogging memory with optional discard behavior.
 
 ## Why I Wrote It
 
-I really like [Organizr](https://github.com/causefx/Organizr). It's a great app. But after running it for a while, I realized I was only using one feature - the side pane to load services in iframes. I wasn't using widgets or integrations, just the ability to switch between persistent views of my tools... without opening a dozen tabs.
+I really like [Organizr](https://github.com/causefx/Organizr). It's a great app, and I recommend it for anyone who will make use of its features. After running it for a while, I realized I was only using one feature myself - the side panel to load services in iframes. I wasn't using widgets or integrations, just the ability to switch between persistent views of my tools... without opening a dozen tabs.
 
-At the same time, I preferred the widget ecosystem of standalone dashboard apps and wanted a clean way to use them alongside a simple menu for switching between tools.
+At the same time, I preferred the widget ecosystem of other dashboard apps and wanted a clean way to use them alongside a simple menu for switching between tools.
 
 Rather than keep running a full-featured app for just one use case, I started from scratch and built Sidecarr - something that does exactly what I need and nothing more. It's small, fast, transparent, and fits perfectly into Docker-based homelab setups.
 
@@ -30,7 +30,7 @@ I plan to keep Sidecarr updated, but feature bloat is off the table. It's meant 
 
 ## Key Features
 
-- Collapsible sidebar with icon-only mode
+- Collapsible side panel with icon-only mode
 - Fully configurable via `config.yaml`
 - Lightweight (vanilla HTML/CSS/JS + nginx)
 - Optional iframe discard strategy (remove or blank unused tabs)
@@ -73,7 +73,7 @@ volumes:
   config:
 ```
 
-You can also use a bind mount if you prefer. If you don’t mount anything at all, Sidecarr will start in demo mode. It’ll show a default page with instructions and a sample sidebar (with non-functional links) so you can see how it works right out of the gate.
+You can also use a bind mount if you prefer. If you don’t mount anything at all, Sidecarr will start in demo mode. It’ll show a default page with instructions and a sample side panel (populated with non-functional links) so you can see how it works right out of the gate.
 
 Check out the sample `config.yaml` in this repo to start building your own setup.
 
