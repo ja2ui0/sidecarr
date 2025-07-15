@@ -1,15 +1,24 @@
-FROM nginx:alpine
+FROM node:20-alpine
 
-# Copy site files (immutable app code)
-COPY ./site/ /usr/share/nginx/html/
+# Install NGINX
+RUN apk add --no-cache nginx
+
+# Create required NGINX directories
+RUN mkdir -p /usr/share/nginx/html /run/nginx /config
+
+# Copy static site files (existing app)
+COPY site/ /usr/share/nginx/html/
 
 # Copy nginx config
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY includes/nginx.conf /etc/nginx/nginx.conf
 
-# Mount point for user config + icons
+# Optional: pre-fill config folder if needed
 COPY config/ /config/
 VOLUME /config
 
 # Expose web port
 EXPOSE 80
+
+# Start NGINX only (no Node backend yet)
+CMD ["nginx", "-g", "daemon off;"]
 
