@@ -108,6 +108,9 @@ html, body {
   width: 20px;
   height: 20px;
   margin-right: 10px;
+  object-fit: contain;
+  object-position: center;
+  display: block;
 }
 
 .group-label {
@@ -142,6 +145,9 @@ html, body {
   width: 20px;
   height: 20px;
   margin-right: 10px;
+  object-fit: contain;
+  object-position: center;
+  display: block;
 }
 
 .link-label {
