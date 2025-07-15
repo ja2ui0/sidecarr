@@ -4,6 +4,13 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '.github/**'
+      - 'Dockerfile'
+      - 'includes/**'
+      - 'site/**'
+      - 'api/**'
+      - 'config/**'
     paths-ignore:
       - 'README.md'
       - 'LICENSE'
